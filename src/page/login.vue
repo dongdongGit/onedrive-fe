@@ -3,7 +3,8 @@
 	  	<transition name="form-fade" mode="in-out">
 	  		<section class="form_contianer" v-show="showLogin">
 		  		<div class="manage_tip">
-		  			<p>Onedrive 管理系统</p>
+		  			<!-- <p>Onedrive 管理系统</p> -->
+		  			<p>test</p>
 		  		</div>
 		    	<el-form :model="loginForm" :rules="rules" ref="loginForm">
 					<el-form-item prop="username">
