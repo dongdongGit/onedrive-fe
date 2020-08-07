@@ -1,6 +1,6 @@
 import { baseUrl } from './env'
 
-export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
+export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
 	type = type.toUpperCase();
 	url = baseUrl + url;
 
@@ -18,7 +18,6 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 
 	if (window.fetch && method == 'fetch') {
 		let requestConfig = {
-			credentials: 'include',
 			method: type,
 			headers: {
 				'Accept': 'application/json',
@@ -27,13 +26,13 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 			mode: "cors",
 			cache: "force-cache"
 		}
-		
+
 		if (type == 'POST') {
 			Object.defineProperty(requestConfig, 'body', {
 				value: JSON.stringify(data)
 			})
 		}
-		
+
 		try {
 			const response = await fetch(url, requestConfig);
 			const responseJson = await response.json();

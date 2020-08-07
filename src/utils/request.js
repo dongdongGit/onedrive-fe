@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { baseUrl } from '@/env'
+import { baseUrl } from '@/config/env'
 import { Loading, Message } from 'element-ui';
 
 const axiosInstance = axios.create();
@@ -9,13 +9,14 @@ axiosInstance.defaults.baseURL = baseUrl.baseUri;
 var elementLoading = Loading.service
 var loading;
 
+let base_url = baseUrl;
 // 错误信息
 const error = (message = '遇到错误，请刷新重试！', params = {}) => {
   const default_params = {
     'message': message,
     'type': 'error'
   };
- 
+
   Message(Object.assign(default_params, params));
 }
 
@@ -64,45 +65,47 @@ axiosInstance.interceptors.request.use(
 );
 
 // 响应拦截器
-axiosInstance.interceptors.response.use(function (res) {
-  tryHideFullScreenLoading();
-
-  return res.data;
-}, function (error) {
-  tryHideFullScreenLoading();
-
-  const result = JSON.parse(error.request.response);
-  switch (error.request.status) {
-    case 401:
-      error(result.error.message);
-      break;
-    case 422:
-      let message = '';
-      result.data.forEach(element => {
-        message = message + '<p>' + element['content'] + "</p>";
-      });
-      error(result.error.message, { dangerouslyUseHTMLString: true});
-      break;
-    case 500:
-      error(result.error.message || "服务器错误", { dangerouslyUseHTMLString: true});
-      break;
-    default:
-      break;
-  }
-
-  return Promise.reject(error);
-});
-
 axiosInstance.interceptors.response.use(
   response => {
     tryHideFullScreenLoading();
-    
-    return res.data;
+    console.log(response);
+    return response.data;
   },
-  error => {
+  err => {
+    tryHideFullScreenLoading();
+    const result = JSON.parse(err.request.response);
 
+    switch (result.status) {
+      case 401:
+      case 404:
+        console.log('test');
+        error(result.error.message);
+        break;
+      case 422:
+        let message = '';
+        result.data.forEach(element => {
+          message = message + '<p>' + element['content'] + "</p>";
+        });
+        error(result.error.message, { dangerouslyUseHTMLString: true});
+        break;
+      case 500:
+        error(result.error.message || "服务器错误", { dangerouslyUseHTMLString: true});
+        break;
+      default:
+        break;
+    }
+    console.log('error')
+    return Promise.reject(error);
   }
 );
 
-export default async () => {
+
+export default async (params) => {
+  let url = params.url;
+  let bsae_url = base_url;
+  url = url.startsWith('/') ? url : '/' + url;
+  base_url = bsae_url.endsWith('/') ? bsae_url.substr(-2) : bsae_url;
+  params.url = base_url + url;
+
+  axiosInstance.request(params)
 }
