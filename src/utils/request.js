@@ -68,7 +68,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   response => {
     tryHideFullScreenLoading();
-    console.log(response);
+    
     return response.data;
   },
   err => {
@@ -78,15 +78,19 @@ axiosInstance.interceptors.response.use(
     switch (result.status) {
       case 401:
       case 404:
-        console.log('test');
         error(result.error.message);
         break;
       case 422:
         let message = '';
-        result.data.forEach(element => {
-          message = message + '<p>' + element['content'] + "</p>";
-        });
-        error(result.error.message, { dangerouslyUseHTMLString: true});
+        let use_html = false;
+
+        if (result.data && result.data instanceof Array) {
+          use_html = true;
+          result.data.forEach(element => {
+            message = message + '<p>' + element['content'] + '</p>';
+          });
+        }
+        error(result.error.message, { dangerouslyUseHTMLString: use_html});
         break;
       case 500:
         error(result.error.message || "服务器错误", { dangerouslyUseHTMLString: true});
@@ -94,6 +98,7 @@ axiosInstance.interceptors.response.use(
       default:
         break;
     }
+
     console.log('error')
     return Promise.reject(error);
   }

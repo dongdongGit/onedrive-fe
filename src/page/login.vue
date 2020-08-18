@@ -14,7 +14,7 @@
             <el-input type="password" placeholder="密码" v-model="loginForm.password"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="login('loginForm')" class="submit_btn">登陆</el-button>
+            <el-button type="primary" size="small" @click="submitForm('loginForm')" class="submit_btn">登陆</el-button>
           </el-form-item>
         </el-form>
       </section>
@@ -59,19 +59,20 @@ export default {
             username: this.loginForm.username,
             password: this.loginForm.password,
           });
-        //   if (res.status == 1) {
-        //     this.$message({
-        //       type: "success",
-        //       message: "登录成功",
-        //     });
-        //     this.$router.push("manage");
-        //   } else {
-        //     this.$message({
-        //       type: "error",
-        //       message: res.message,
-        //     });
-        //   }
-        // } else {
+          // if (res.status == 1) {
+          //   this.$message({
+          //     type: "success",
+          //     message: "登录成功",
+          //   });
+          //   this.$router.push("manage");
+          // } else {
+          //   this.$message({
+          //     type: "error",
+          //     message: res.message,
+          //   });
+          // }
+        } 
+        // else {
         //   this.$notify.error({
         //     title: "错误",
         //     message: "请输入正确的用户名密码",
