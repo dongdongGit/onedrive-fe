@@ -10,3 +10,8 @@ export const login = data => request({
     method: 'POST'
 });
 
+/**
+ * 用户信息
+ */
+export const session = () => request({url: `admin/session`,});
+

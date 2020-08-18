@@ -59,18 +59,15 @@ export default {
             username: this.loginForm.username,
             password: this.loginForm.password,
           });
-          // if (res.status == 1) {
-          //   this.$message({
-          //     type: "success",
-          //     message: "登录成功",
-          //   });
-          //   this.$router.push("manage");
-          // } else {
-          //   this.$message({
-          //     type: "error",
-          //     message: res.message,
-          //   });
-          // }
+          console.log('res', res);
+          if (res.status == 200) {
+            saveAuthUser();
+            // this.$message({
+            //   type: "success",
+            //   message: "登录成功",
+            // });
+            // this.$router.push("manage");
+          }
         } 
         // else {
         //   this.$notify.error({
@@ -84,15 +81,15 @@ export default {
     }
   },
   watch: {
-    adminInfo: function (newValue) {
-      if (newValue.id) {
-        this.$message({
-          type: "success",
-          message: "检测到您之前登录过，将自动登录",
-        });
-        this.$router.push("manage");
-      }
-    },
+    // adminInfo: function (newValue) {
+    //   if (newValue.id) {
+    //     this.$message({
+    //       type: "success",
+    //       message: "检测到您之前登录过，将自动登录",
+    //     });
+    //     this.$router.push("manage");
+    //   }
+    // },
   },
 };
 </script>

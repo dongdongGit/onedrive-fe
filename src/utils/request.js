@@ -68,7 +68,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   response => {
     tryHideFullScreenLoading();
-    
+
     return response.data;
   },
   err => {
@@ -99,8 +99,7 @@ axiosInstance.interceptors.response.use(
         break;
     }
 
-    console.log('error')
-    return Promise.reject(error);
+    return Promise.reject(err);
   }
 );
 
@@ -112,5 +111,5 @@ export default async (params) => {
   base_url = bsae_url.endsWith('/') ? bsae_url.substr(-2) : bsae_url;
   params.url = base_url + url;
 
-  axiosInstance.request(params)
+  return axiosInstance.request(params);
 }
